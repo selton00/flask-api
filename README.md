@@ -1,4 +1,4 @@
-# Avalicação DevOps
+# Avaliação DevOps
 
 Esse repositorio é um fork do flask-api mas só irei utilizar o ambiente virtual e o example.py
 
