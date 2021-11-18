@@ -8,7 +8,7 @@ networks:
 
 services:
   flaskapp:
-    image: seltonlucas/flask-api:v1
+    image: seltonlucas/flask-api:1
     ports: 
       - 5000:5000
     networks:

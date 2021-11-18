@@ -11,7 +11,8 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    dockerapp = docker.build("seltonlucas/flask-api:${env.BUILD_ID}")
+                    dockerapp = docker.build("seltonlucas/flask-api:v${env.BUILD_ID}",
+                        '-f ./Dockerfile .')
                 }
             }
         }
