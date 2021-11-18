@@ -1,147 +1,73 @@
-# Flask API
+#Avalicação DevOps
 
-Browsable web APIs for Flask.
+Esse repositorio é um fork do flask-api mas só irei utilizar o ambiente virtual e o example.py
 
-[![Unix Build Status](https://img.shields.io/travis/com/flask-api/flask-api.svg)](https://travis-ci.com/flask-api/flask-api)
-[![Coverage Status](https://img.shields.io/coveralls/flask-api/flask-api.svg)](https://coveralls.io/r/flask-api/flask-api)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/flask-api/flask-api.svg)](https://scrutinizer-ci.com/g/flask-api/flask-api/)
-[![PyPI Version](https://img.shields.io/pypi/v/Flask-API.svg)](https://pypi.org/project/Flask-API/)
+##Dockerfile flask-api
 
-**Status**: This project is in maintenance mode. The original author ([Tom Christie](https://twitter.com/_tomchristie)) has shifted his focus to [API Star](https://github.com/encode/apistar). Passing PRs will still be considered for releases by the maintainer ([Jace Browning](https://twitter.com/jacebrowning)).
+- Primeiro eu extraio as depedencias com o pipenv
 
-## Overview
-
-Flask API is a drop-in replacement for Flask that provides an implementation of browsable APIs similar to what [Django REST framework](http://www.django-rest-framework.org) offers. It gives you properly content-negotiated responses and smart request parsing:
-
-![Screenshot](docs/screenshot.png)
-
-## Installation
-
-Requirements:
-
-* Python 3.6+
-* Flask 1.1.+
-
-Install using `pip`:
-
-```shell
-$ pip install Flask-API
+``` 
+$ pipenv sync
+$ pipenv run pip freeze > requirements.txt
 ```
 
-Import and initialize your application:
+Depois foi criado a Dockerfile para o app
 
-```python
-from flask_api import FlaskAPI
+- Para buildar a imagem, podemos utilizar:
 
-app = FlaskAPI(__name__)
+``` 
+$ docker build -t seltonlucas/flask-api:v1 .
 ```
 
-## Responses
+- E para testar:
 
-Return any valid response object as normal, or return a `list` or `dict`.
-
-```python
-@app.route('/example/')
-def example():
-    return {'hello': 'world'}
+``` 
+$ docker container run --name jenkins --rm -d -p 5000:5000 seltonlucas/flask-api:v1
 ```
 
-A renderer for the response data will be selected using content negotiation based on the client 'Accept' header. If you're making the API request from a regular client, this will default to a JSON response. If you're viewing the API in a browser, it'll default to the browsable API HTML.
+## Docker Compose
 
-## Requests
+No arquivo docker-compose.yaml foi configurado o volume persistente e a rede do banco de dados
+utilizamos a imagem e a versão criadas acima do flask-api, para o banco de dados foi utilizado a imagem mysql:8.0 e definida as váriaveis de ambiente
 
-Access the parsed request data using `request.data`.  This will handle JSON or form data by default.
+- para rodar o arquivo utilizamos
 
-```python
-@app.route('/example/')
-def example():
-    return {'request data': request.data}
+``` 
+$ docker-compose up -d 
 ```
 
-## Example
+## Jenkins Container
 
-The following example demonstrates a simple API for creating, listing, updating and deleting notes.
+No repositorio há um diretorio `/jenkins_config` destinado as configurações do Jenkins
 
-```python
-from flask import request, url_for
-from flask_api import FlaskAPI, status, exceptions
+O dockerfile do serviço define as configurações para utilizar o Jenkins Configuration as Code(JCasC)
+Temos um arquivo que define parametros de segurança, desabilitamos sign up de novos usuários e o login e senha do administrador como váriaveis
+e o outro define os plugin necessários para construímos nossa pipeline
 
-app = FlaskAPI(__name__)
+- Para buildarmos a imagem do Jenkins utilizamos
 
-
-notes = {
-    0: 'do the shopping',
-    1: 'build the codez',
-    2: 'paint the door',
-}
-
-def note_repr(key):
-    return {
-        'url': request.host_url.rstrip('/') + url_for('notes_detail', key=key),
-        'text': notes[key]
-    }
-
-
-@app.route("/", methods=['GET', 'POST'])
-def notes_list():
-    """
-    List or create notes.
-    """
-    if request.method == 'POST':
-        note = str(request.data.get('text', ''))
-        idx = max(notes.keys()) + 1
-        notes[idx] = note
-        return note_repr(idx), status.HTTP_201_CREATED
-
-    # request.method == 'GET'
-    return [note_repr(idx) for idx in sorted(notes.keys())]
-
-
-@app.route("/<int:key>/", methods=['GET', 'PUT', 'DELETE'])
-def notes_detail(key):
-    """
-    Retrieve, update or delete note instances.
-    """
-    if request.method == 'PUT':
-        note = str(request.data.get('text', ''))
-        notes[key] = note
-        return note_repr(key)
-
-    elif request.method == 'DELETE':
-        notes.pop(key, None)
-        return '', status.HTTP_204_NO_CONTENT
-
-    # request.method == 'GET'
-    if key not in notes:
-        raise exceptions.NotFound()
-    return note_repr(key)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+``` 
+$ docker build -t jenkins:jcasc .
 ```
 
-Now run the webapp:
+- E para iniciarmos 
 
-```shell
-$ python ./example.py
- * Running on http://127.0.0.1:5000/
- * Restarting with reloader
+``` 
+$ docker run --name jenkins --rm -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
 ```
 
-You can now open a new tab and interact with the API from the command line:
+Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros
 
-```shell
-$ curl -X GET http://127.0.0.1:5000/
-[{"url": "http://127.0.0.1:5000/0/", "text": "do the shopping"},
- {"url": "http://127.0.0.1:5000/1/", "text": "build the codez"},
- {"url": "http://127.0.0.1:5000/2/", "text": "paint the door"}]
+## Jenkins Pipeline
 
-$ curl -X GET http://127.0.0.1:5000/1/
-{"url": "http://127.0.0.1:5000/1/", "text": "build the codez"}
+Para criar uma pipeline no Jenkins foi criado a Jenkinsfile no diretorio principal
 
-$ curl -X PUT http://127.0.0.1:5000/1/ -d text="flask api is teh awesomez"
-{"url": "http://127.0.0.1:5000/1/", "text": "flask api is teh awesomez"}
-```
+- Para buildar a imagem e enviar para o dockerhub precisamos de credenciais que são definidas na configuração do programa
 
-You can also work on the API directly in your browser, by opening <http://127.0.0.1:5000/>.  You can then navigate between notes, and make `GET`, `PUT`, `POST` and `DELETE` API requests.
+![Credenciais](imgs/jenkins1.png)
+
+- Utilizamos um repositorio no github para criar um job que irá executar a pipeline
+
+![Escolha do repositorio no github](imgs/jenkins2.png)
+
+![Configuração da Pipeline](imgs/jenkins3.png)
