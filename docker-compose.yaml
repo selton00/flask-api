@@ -9,6 +9,8 @@ networks:
 services:
   flaskapp:
     image: seltonlucas/flask-api:1
+    depends_on:
+      - db
     ports: 
       - 5000:5000
     networks:
