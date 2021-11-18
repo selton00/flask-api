@@ -1,0 +1,27 @@
+version: '3.8'
+
+volumes:
+  mysql_vol:
+  
+networks:
+  mysql_net:
+
+services:
+  flaskapp:
+    image: seltonlucas/flask-api:v1
+    ports: 
+      - 5000:5000
+    networks:
+      - mysql_net
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql_net
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlpwd
+      MYSQL_DATABASE : flask-api
