@@ -33,7 +33,7 @@ utilizamos a imagem e a versão criadas acima do flask-api, para o banco de dado
 - para rodar o arquivo utilizamos
 
 ``` 
-$ docker-compose up -d 
+$ docker-compose --env-file ./.env up -d 
 ```
 
 ## Jenkins Container
