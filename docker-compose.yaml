@@ -9,6 +9,8 @@ networks:
 services:
   flaskapp:
     image: seltonlucas/flask-api:1
+    depends_on:
+      - db
     ports: 
       - 5000:5000
     networks:
@@ -23,5 +25,5 @@ services:
     volumes:
       - mysql_vol:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: mysqlpwd
-      MYSQL_DATABASE : flask-api
+      MYSQL_ROOT_PASSWORD: ${mysqlpwd}
+      MYSQL_DATABASE : ${mysqldatabase}

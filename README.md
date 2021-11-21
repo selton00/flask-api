@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Avalicação DevOps
+=======
+# Avaliação DevOps
+>>>>>>> bc947f45860f2ac672ef868b142f0ecbbc988746
 
 Esse repositorio é um fork do flask-api mas só irei utilizar o ambiente virtual e o example.py
 
@@ -33,7 +37,7 @@ utilizamos a imagem e a versão criadas acima do flask-api, para o banco de dado
 - para rodar o arquivo utilizamos
 
 ``` 
-$ docker-compose up -d 
+$ docker-compose --env-file ./.env up -d 
 ```
 
 ## Jenkins Container
@@ -53,10 +57,11 @@ $ docker build -t jenkins:jcasc .
 - E para iniciarmos 
 
 ``` 
-$ docker container run --name jenkins -d --rm --group-add 0 -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
+$ docker container run --name jenkins -d --rm -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
 ```
 
 Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros
+Para rodar pipelines usando o docker no Jenkins é necessário utilizar o conceito de docker in docker
 
 ## Jenkins Pipeline
 
@@ -72,4 +77,8 @@ Para criar uma pipeline no Jenkins foi criado a Jenkinsfile no diretorio princip
 
 ![Configuração da Pipeline](imgs/jenkins3.png)
 
+<<<<<<< HEAD
 Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada
+=======
+Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada
+>>>>>>> bc947f45860f2ac672ef868b142f0ecbbc988746
