@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-# Avalicação DevOps
-=======
+
 # Avaliação DevOps
->>>>>>> bc947f45860f2ac672ef868b142f0ecbbc988746
 
 Esse repositorio é um fork do flask-api mas só irei utilizar o ambiente virtual e o example.py
 
@@ -32,7 +29,7 @@ $ docker container run --name jenkins --rm -d -p 5000:5000 seltonlucas/flask-api
 ## Docker Compose
 
 No arquivo docker-compose.yaml foi configurado o volume persistente e a rede do banco de dados
-utilizamos a imagem e a versão criadas acima do flask-api, para o banco de dados foi utilizado a imagem mysql:8.0 e definida as váriaveis de ambiente
+utilizamos a imagem e a versão criadas acima para app, para o banco de dados foi utilizado a imagem mysql:8.0 e definida as váriaveis de ambiente
 
 - para rodar o arquivo utilizamos
 
@@ -77,8 +74,6 @@ Para criar uma pipeline no Jenkins foi criado a Jenkinsfile no diretorio princip
 
 ![Configuração da Pipeline](imgs/jenkins3.png)
 
-<<<<<<< HEAD
-Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada
-=======
-Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada
->>>>>>> bc947f45860f2ac672ef868b142f0ecbbc988746
+Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada.
+Podemos por exemplo, definir que a cada push neste repositorio a pipeline irá criar a imagem e enviar para o repositorio remoto
+
