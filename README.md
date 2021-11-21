@@ -1,8 +1,8 @@
-#Avalicação DevOps
+# Avalicação DevOps
 
 Esse repositorio é um fork do flask-api mas só irei utilizar o ambiente virtual e o example.py
 
-##Dockerfile flask-api
+## Dockerfile flask-api
 
 - Primeiro eu extraio as depedencias com o pipenv
 
@@ -53,7 +53,7 @@ $ docker build -t jenkins:jcasc .
 - E para iniciarmos 
 
 ``` 
-$ docker run --name jenkins --rm -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
+$ docker container run --name jenkins -d --rm --group-add 0 -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
 ```
 
 Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros
@@ -62,12 +62,14 @@ Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definido
 
 Para criar uma pipeline no Jenkins foi criado a Jenkinsfile no diretorio principal
 
-- Para buildar a imagem e enviar para o dockerhub precisamos de credenciais que são definidas na configuração do programa
+- Para buildar a imagem e enviar para o dockerhub precisamos configurar as credenciais que são definidas na parte de segurança do programa
 
 ![Credenciais](imgs/jenkins1.png)
 
-- Utilizamos um repositorio no github para criar um job que irá executar a pipeline
+- E utilizamos esse repositorio no github para criar um job que irá executar a pipeline
 
 ![Escolha do repositorio no github](imgs/jenkins2.png)
 
 ![Configuração da Pipeline](imgs/jenkins3.png)
+
+Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada
