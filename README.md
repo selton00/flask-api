@@ -23,7 +23,7 @@ $ docker build -t seltonlucas/flask-api:v1 .
 - E para testar:
 
 ``` 
-$ docker container run --name jenkins --rm -d -p 5000:5000 seltonlucas/flask-api:v1
+$ docker container run --name flask-api --rm -d -p 5000:5000 seltonlucas/flask-api:v1
 ```
 
 ## Docker Compose
