@@ -17,13 +17,13 @@ Depois foi criado a Dockerfile para o app
 - Para buildar a imagem, podemos utilizar:
 
 ``` 
-$ docker build -t seltonlucas/flask-api:v1 .
+$ docker build -t seltonlucas/flask-api:1 .
 ```
 
 - E para testar:
 
 ``` 
-$ docker container run --name jenkins --rm -d -p 5000:5000 seltonlucas/flask-api:v1
+$ docker container run --name flask-api --rm -d -p 5000:5000 seltonlucas/flask-api:1
 ```
 
 ## Docker Compose
