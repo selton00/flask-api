@@ -28,8 +28,9 @@ $ docker container run --name flask-api --rm -d -p 5000:5000 seltonlucas/flask-a
 
 ## Docker Compose
 
-No arquivo docker-compose.yaml foi configurado o volume persistente e a rede do banco de dados
-utilizamos a imagem e a versão criadas acima para app, para o banco de dados foi utilizado a imagem mysql:8.0 e definida as váriaveis de ambiente
+No arquivo docker-compose.yaml foi configurado o volume persistente e a rede do banco de dados.
+
+Utilizamos a imagem e a versão criadas acima para o app e para o banco de dados foi utilizado a imagem mysql:8.0.
 
 - para rodar o arquivo utilizamos
 
@@ -37,13 +38,17 @@ utilizamos a imagem e a versão criadas acima para app, para o banco de dados fo
 $ docker-compose --env-file ./.env up -d 
 ```
 
+No .env temos todas as váriaveis de ambiente necessários para conectar ao banco.
+
 ## Jenkins Container
 
 No repositorio há um diretorio `/jenkins_config` destinado as configurações do Jenkins
 
 O dockerfile do serviço define as configurações para utilizar o Jenkins Configuration as Code(JCasC).
-Temos um arquivo que define parametros de segurança, desabilitamos sign up de novos usuários e o login e senha do administrador como váriaveis.
-E o outro define os plugins necessários para construímos nossa pipeline
+
+Temos um arquivo que define parametros de segurança, desabilitamos sign up de novos usuários e o login e senha do administrador são definidas como váriaveis.
+
+E outro que define os plugins necessários para construímos nossa pipeline.
 
 - Para buildarmos a imagem do Jenkins utilizamos
 
@@ -58,17 +63,18 @@ $ docker container run --name jenkins -d --rm -v /var/run/docker.sock:/var/run/d
 ```
 
 Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros.
+
 Para rodar pipelines usando o docker no Jenkins é necessário utilizar o conceito de docker in docker.
 
 ## Jenkins Pipeline
 
-Para criar uma pipeline no Jenkins foi criado a Jenkinsfile no diretorio principal
+A pipeline no jenkins irá utilizar a jenkinsfile configurada na raiz deste repositorio.
 
-- Para buildar a imagem e enviar para o dockerhub precisamos configurar as credenciais que são definidas na parte de segurança do programa
+- Ao buildar a imagem e enviar para o dockerhub precisamos configurar as credenciais que são definidas na parte de segurança do programa
 
 ![Credenciais](imgs/jenkins1.png)
 
-- E utilizamos esse repositorio no github para criar um job que irá executar a pipeline
+- Logo em seguida iremos criar um job.
 
 ![Escolha do repositorio no github](imgs/jenkins2.png)
 
