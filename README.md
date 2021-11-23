@@ -41,9 +41,9 @@ $ docker-compose --env-file ./.env up -d
 
 No repositorio há um diretorio `/jenkins_config` destinado as configurações do Jenkins
 
-O dockerfile do serviço define as configurações para utilizar o Jenkins Configuration as Code(JCasC)
-Temos um arquivo que define parametros de segurança, desabilitamos sign up de novos usuários e o login e senha do administrador como váriaveis
-e o outro define os plugin necessários para construímos nossa pipeline
+O dockerfile do serviço define as configurações para utilizar o Jenkins Configuration as Code(JCasC).
+Temos um arquivo que define parametros de segurança, desabilitamos sign up de novos usuários e o login e senha do administrador como váriaveis.
+E o outro define os plugins necessários para construímos nossa pipeline
 
 - Para buildarmos a imagem do Jenkins utilizamos
 
@@ -57,8 +57,8 @@ $ docker build -t jenkins:jcasc .
 $ docker container run --name jenkins -d --rm -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password jenkins:jcasc
 ```
 
-Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros
-Para rodar pipelines usando o docker no Jenkins é necessário utilizar o conceito de docker in docker
+Nós definimos aqui o usuário e a senha mas essas váriaveis podem ser definidos por metodos mais seguros.
+Para rodar pipelines usando o docker no Jenkins é necessário utilizar o conceito de docker in docker.
 
 ## Jenkins Pipeline
 
