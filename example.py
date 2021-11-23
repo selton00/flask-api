@@ -1,7 +1,16 @@
 from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
+import os 
 
 app = FlaskAPI(__name__)
+
+"""Connection to the database via .env file example"""
+
+app.config['MYSQL_DATABASE_DB'] = os.getenv("MYSQL_DATABASE_DB", "admin")
+app.config['MYSQL_DATABASE_HOST'] = os.getenv("MYSQL_DATABASE_HOST", "localhost")
+app.config['MYSQL_DATABASE_PORT'] = int(os.getenv("MYSQL_DATABASE_PORT", "3306"))
+app.config['MYSQL_DATABASE_USERNAME'] = os.getenv("MYSQL_DATABASE_USERNAME", "mysqluser")
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("MYSQL_DATABASE_PASSWORD", "mysqlpwd")
 
 
 notes = {

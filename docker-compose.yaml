@@ -10,13 +10,19 @@ services:
   flaskapp:
     image: seltonlucas/flask-api:1
     depends_on:
-      - db
+      - mysqldb
     ports: 
       - 5000:5000
     networks:
       - mysql_net
+    environment:
+      MYSQL_DATABASE_DB: ${MYSQL_DATABASE_DB}
+      MYSQL_DATABASE_HOST: ${MYSQL_DATABASE_HOST}
+      MYSQL_DATABASE_PORT: ${MYSQL_DATABASE_PORT}
+      MYSQL_DATABASE_USERNAME: ${MYSQL_DATABASE_USERNAME}
+      MYSQL_DATABASE_PASSWORD: ${MYSQL_DATABASE_PASSWORD}
 
-  db:
+  mysqldb:
     image: mysql:8.0
     ports:
       - "3306:3306"
@@ -25,5 +31,7 @@ services:
     volumes:
       - mysql_vol:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${mysqlpwd}
-      MYSQL_DATABASE : ${mysqldatabase}
+      MYSQL_ROOT_PASSWORD: ${mysqlrootpwd}
+      MYSQL_DATABASE : ${MYSQL_DATABASE_DB}
+      MYSQL_USER: ${MYSQL_DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_DATABASE_PASSWORD}
