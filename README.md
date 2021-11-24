@@ -24,6 +24,17 @@ $ docker build -t seltonlucas/flask-api:1 .
 
 ``` 
 $ docker container run --name flask-api --rm -d -p 5000:5000 seltonlucas/flask-api:1
+
+$ curl -X GET http://127.0.0.1:5000/
+[{"url": "http://127.0.0.1:5000/0/", "text": "do the shopping"},
+ {"url": "http://127.0.0.1:5000/1/", "text": "build the codez"},
+ {"url": "http://127.0.0.1:5000/2/", "text": "paint the door"}]
+
+$ curl -X GET http://127.0.0.1:5000/1/
+{"url": "http://127.0.0.1:5000/1/", "text": "build the codez"}
+
+$ curl -X PUT http://127.0.0.1:5000/1/ -d text="flask api is teh awesomez"
+{"url": "http://127.0.0.1:5000/1/", "text": "flask api is teh awesomez"}
 ```
 
 ## Docker Compose
@@ -83,3 +94,6 @@ A pipeline no jenkins irá utilizar a jenkinsfile configurada na raiz deste repo
 Na configuração também podemos definir de quanto em quanto tempo a pipeline será executada.
 Podemos por exemplo, definir que a cada push neste repositorio a pipeline irá criar a imagem e enviar para o repositorio remoto
 
+![Execução da pipeline](imgs/jenkins4.png)
+
+Parte da execução é demonstrada acima.
